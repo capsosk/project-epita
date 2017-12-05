@@ -16,6 +16,7 @@ public class FileIdentityDAO {
 	public FileIdentityDAO(String path) throws IOException {
 		
 		File file = new File(path);
+		
 		if(!file.exists()) {
 			file.getParentFile().mkdirs(); //make parent dirs to our filepath
 			file.createNewFile();
@@ -39,6 +40,17 @@ public class FileIdentityDAO {
 	
 	public List<Identity> search(Identity criteria){
 		List<Identity> results = new ArrayList<Identity>();
+		while(scanner.hasNext()) {
+			Identity currentIdentity = new Identity();
+			scanner.nextLine();
+			currentIdentity.setDisplayName(scanner.nextLine());
+			currentIdentity.setEmail(scanner.nextLine());
+			currentIdentity.setUid(scanner.nextLine());
+			scanner.nextLine();
+			results.add(currentIdentity);
+			
+		}
+		
 		return results;
 	}
 	

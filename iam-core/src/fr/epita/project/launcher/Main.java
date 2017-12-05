@@ -17,7 +17,6 @@ public class Main {
 		id1.setUid("1");
 		
 		dao.create(id1);
-		return;
 	}
 
 }
