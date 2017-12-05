@@ -47,11 +47,31 @@ public class FileIdentityDAO {
 			currentIdentity.setEmail(scanner.nextLine());
 			currentIdentity.setUid(scanner.nextLine());
 			scanner.nextLine();
-			results.add(currentIdentity);
+			
+			if (checkMatch(criteria, currentIdentity)) {
+				results.add(currentIdentity);
+			}
+			
 			
 		}
 		
 		return results;
+	}
+
+	private boolean checkMatch(Identity criteria, Identity currentIdentity) {
+		boolean result = false;
+		if (criteria.getDisplayName() != null) {
+			result = currentIdentity.getDisplayName().startsWith(criteria.getDisplayName());
+		}
+		if (criteria.getEmail() != null) {
+			result = currentIdentity.getEmail().startsWith(criteria.getEmail());
+		}
+		if (criteria.getUid() != null) {
+			result = currentIdentity.getUid().equals(criteria.getUid());
+		}
+		return result;
+		
+		
 	}
 	
 	public void update(Identity identity) {
