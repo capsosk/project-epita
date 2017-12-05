@@ -14,7 +14,7 @@ public class TestFileOperations {
 		
 		id1.setDisplayName("Jakub");
 		id1.setEmail("mail");
-		id1.setUid("123");
+		id1.setUid("1");
 		
 		dao.create(id1);
 		

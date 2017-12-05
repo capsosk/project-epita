@@ -3,19 +3,19 @@ package fr.epita.project.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import fr.epita.project.dataModel.Identity;
 
 public class FileIdentityDAO {
-	private String filePath;
 	private PrintWriter printWriter;
 	private Scanner scanner;
 	
 	public FileIdentityDAO(String path) throws IOException {
-		this.filePath = path;
 		
-		File file = new File(this.filePath);
+		File file = new File(path);
 		if(!file.exists()) {
 			file.getParentFile().mkdirs(); //make parent dirs to our filepath
 			file.createNewFile();
