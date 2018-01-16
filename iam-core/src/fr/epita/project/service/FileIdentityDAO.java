@@ -1,6 +1,7 @@
 package fr.epita.project.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class FileIdentityDAO {
 			
 		}
 		
-		this.printWriter = new PrintWriter(file);
+		
+		this.printWriter = new PrintWriter(new FileOutputStream(file, true));
 		this.scanner = new Scanner(file);
 		
 		
@@ -73,7 +75,7 @@ public class FileIdentityDAO {
 		
 		
 	}
-	
+		
 	public void update(Identity identity) {
 		
 	}
