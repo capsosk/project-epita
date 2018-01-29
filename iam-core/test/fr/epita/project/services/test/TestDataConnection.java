@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class TestDataConnection {
+public class TestDataConnection implements IdentityDAO{
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException{
 		
@@ -18,7 +18,7 @@ public class TestDataConnection {
 		connection.close();
 	}
 
-	private static void insertIntoDB(Connection connection) throws SQLException {
+	private static void create(Connection connection) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO IDENTITIES(DISPLAY_NAME, EMAIL, UID) VALUES (?,?,?)");          
 		preparedStatement.setString(1, "Novak");
 		preparedStatement.setString(2, "kkk@gmail");
@@ -37,7 +37,7 @@ public class TestDataConnection {
 		return connection;
 	}
 	
-	private static void testDelete(Connection connection, String toDelete){
+	private static void delete(Connection connection, String toDelete){
 		
 		String sqlQuery = "DELETE ";
 		
@@ -57,6 +57,30 @@ public class TestDataConnection {
 		}
 		
 		
+	}
+
+	@Override
+	public void create(Identity identity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update(Identity identity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(Identity identity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Identity> search(Identity criteria) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
