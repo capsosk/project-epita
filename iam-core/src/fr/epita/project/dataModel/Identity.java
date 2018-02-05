@@ -6,6 +6,11 @@ public class Identity {
 	private String email;
 	private String uid;
 	
+	public Identity(String displayName, String email, String uid) {
+		this.displayName = displayName;
+		this.email = email;
+		this.uid = uid;
+	}
 	public String getDisplayName() {
 		return displayName;
 	}

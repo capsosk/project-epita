@@ -17,7 +17,7 @@ public class TestFileOperations {
 
 	private static void testCreateUpdateAndSearch() throws IOException {
 		final FileIdentityDAO dao = new FileIdentityDAO("test/tmp/identities.txt");
-		Identity id1 = new Identity();
+		Identity id1 = new Identity(null, null, null);
 		
 		id1.setDisplayName("Jakub");
 		id1.setEmail("mail");
@@ -29,7 +29,7 @@ public class TestFileOperations {
 		//dao.update(id1);
 		
 		//we execute the test
-		final Identity criteria = new Identity();
+		final Identity criteria = new Identity(null, null, null);
 		criteria.setDisplayName("Tom");
 		final List<Identity> identities = dao.search(criteria);
 		

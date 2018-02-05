@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import fr.epita.project.service.IdentityDAO;
 import fr.epita.project.dataModel.Identity;
 
-public class FileIdentityDAO {
+public class FileIdentityDAO implements IdentityDAO{
 	private PrintWriter printWriter;
 	private Scanner scanner;
 	
@@ -43,7 +44,7 @@ public class FileIdentityDAO {
 	public List<Identity> search(Identity criteria){
 		List<Identity> results = new ArrayList<Identity>();
 		while(scanner.hasNext()) {
-			Identity currentIdentity = new Identity();
+			Identity currentIdentity = new Identity(null, null, null);
 			scanner.nextLine();
 			currentIdentity.setDisplayName(scanner.nextLine());
 			currentIdentity.setEmail(scanner.nextLine());
@@ -76,7 +77,7 @@ public class FileIdentityDAO {
 		
 	}
 		
-	public void update(Identity identity) {
+	public void update(Identity identity, Identity updated) {
 		
 	}
 	

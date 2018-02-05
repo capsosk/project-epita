@@ -1,9 +1,13 @@
-package fr.epita.iam.exceptions;
+package fr.epita.project.exceptions;
 
 import fr.epita.project.dataModel.Identity;
 
+@SuppressWarnings("serial")
 public class DaoCreationException extends Exception {
 
+	/**
+	 * 
+	 */
 	Identity faultyIdentity;
 
 	/**

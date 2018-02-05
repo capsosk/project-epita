@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<identities>
+	<identity>
+		<property name="displayName">
+			Thomas
+		</property>	
+		<property name="email">
+			gmail.com
+		</property>
+		<property name="uid">
+			12345
+		</property>
+		
+	</identity>
+	
+</identities>

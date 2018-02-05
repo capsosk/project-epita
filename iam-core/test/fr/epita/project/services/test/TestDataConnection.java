@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
-public class TestDataConnection implements IdentityDAO{
+import fr.epita.project.dataModel.Identity;
+
+public class TestDataConnection {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException{
 		
@@ -18,7 +21,8 @@ public class TestDataConnection implements IdentityDAO{
 		connection.close();
 	}
 
-	private static void create(Connection connection) throws SQLException {
+	@SuppressWarnings("unused")
+	private static void create(final Connection connection) throws SQLException {
 		PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO IDENTITIES(DISPLAY_NAME, EMAIL, UID) VALUES (?,?,?)");          
 		preparedStatement.setString(1, "Novak");
 		preparedStatement.setString(2, "kkk@gmail");
@@ -37,13 +41,6 @@ public class TestDataConnection implements IdentityDAO{
 		return connection;
 	}
 	
-	private static void delete(Connection connection, String toDelete){
-		
-		String sqlQuery = "DELETE ";
-		
-	}
-	
-	
 	private static void testConnectSelect(Connection connection) throws SQLException {
 		String sqlQuery = "select * from IDENTITIES";
 		
@@ -59,25 +56,25 @@ public class TestDataConnection implements IdentityDAO{
 		
 	}
 
-	@Override
+	
 	public void create(Identity identity) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void update(Identity identity) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void delete(Identity identity) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public List<Identity> search(Identity criteria) {
 		// TODO Auto-generated method stub
 		return null;

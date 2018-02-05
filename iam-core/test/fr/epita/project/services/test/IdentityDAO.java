@@ -1,5 +1,9 @@
 package fr.epita.project.services.test;
 
+import java.util.List;
+
+import fr.epita.project.dataModel.Identity;
+
 public interface IdentityDAO {
 	public void create(Identity identity);
 	public void update(Identity identity);
