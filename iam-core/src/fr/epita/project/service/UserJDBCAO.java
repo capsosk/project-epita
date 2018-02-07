@@ -28,7 +28,7 @@ public class UserJDBCAO {
 		return connection;
 	}
 	
-	private void createUser(User user) throws FileNotFoundException, IOException, DaoCreationException {
+	public void createUser(User user) throws FileNotFoundException, IOException, DaoCreationException {
 		Connection connection = null;
 		try {
 			connection = getConnection();
@@ -81,6 +81,21 @@ public class UserJDBCAO {
 		}
 
 		return result;
+	}
+	public void printDB() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
+		final Connection connection = getConnection();
+
+		final String sqlQuery = "select * from USERS";
+
+		final PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
+		final ResultSet resultSet = preparedStatement.executeQuery();
+		while (resultSet.next()) {
+			System.out.println(resultSet.getString(1));
+			System.out.println(resultSet.getString(2));
+			System.out.println(resultSet.getString(3));
+		}
+		connection.close();
+		
 	}
 	
 	
