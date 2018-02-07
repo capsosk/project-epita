@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.epita.project.dataModel.Identity;
-import fr.epita.project.service.FileIdentityDAO;
+import fr.epita.project.service.UnusedFileIdentityDAO;
 
 public class TestFileOperations {
 
@@ -16,7 +16,7 @@ public class TestFileOperations {
 	}
 
 	private static void testCreateUpdateAndSearch() throws IOException {
-		final FileIdentityDAO dao = new FileIdentityDAO("test/tmp/identities.txt");
+		final UnusedFileIdentityDAO dao = new UnusedFileIdentityDAO("test/tmp/identities.txt");
 		Identity id1 = new Identity(null, null, null);
 		
 		id1.setDisplayName("Jakub");

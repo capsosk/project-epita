@@ -39,7 +39,7 @@ import fr.epita.project.dataModel.Identity;
  *
  * ${tags}
  */
-public class IdentityXMLDAO implements IdentityDAO {
+public class UnusedIdentityXMLDAO implements IdentityDAO {
 
 	private Document document;
 
@@ -49,7 +49,7 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 * @throws SAXException
 	 *
 	 */
-	public IdentityXMLDAO() throws ParserConfigurationException, IOException, SAXException {
+	public UnusedIdentityXMLDAO() throws ParserConfigurationException, IOException, SAXException {
 		final Configuration conf = Configuration.getInstance();
 		final String path = conf.getProperty("xml.filePath");
 		final File source = new File(path);

@@ -13,11 +13,11 @@ import java.util.Scanner;
 import fr.epita.project.service.IdentityDAO;
 import fr.epita.project.dataModel.Identity;
 
-public class FileIdentityDAO implements IdentityDAO{
+public class UnusedFileIdentityDAO implements IdentityDAO{
 	private PrintWriter printWriter;
 	private Scanner scanner;
 	
-	public FileIdentityDAO(String path) throws IOException {
+	public UnusedFileIdentityDAO(String path) throws IOException {
 		
 		File file = new File(path);
 		

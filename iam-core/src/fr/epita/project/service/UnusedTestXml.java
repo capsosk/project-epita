@@ -9,14 +9,14 @@ import org.xml.sax.SAXException;
 
 import fr.epita.project.dataModel.Identity;
 import fr.epita.project.service.IdentityDAO;
-import fr.epita.project.service.IdentityXMLDAO;
+import fr.epita.project.service.UnusedIdentityXMLDAO;
 
-public class TestXml {
+public class UnusedTestXml {
 
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
 
 		// given
-		final IdentityDAO dao = new IdentityXMLDAO();
+		final IdentityDAO dao = new UnusedIdentityXMLDAO();
 
 		// when
 		final List<Identity> identities = dao.search(new Identity("Thomas", null, null));
