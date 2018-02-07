@@ -84,6 +84,9 @@ public class Identity {
 			return false;
 		return true;
 	}
+	public void printIdentity() {
+		System.out.println(this.displayName +" "+ this.email +" "+ this.uid);
+	}
 	
 	
 	

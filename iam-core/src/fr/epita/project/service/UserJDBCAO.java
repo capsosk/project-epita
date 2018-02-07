@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import fr.epita.project.logger.Logger;
+import fr.epita.project.dataModel.Identity;
 import fr.epita.project.dataModel.User;
 import fr.epita.project.exceptions.DaoCreationException;
 
 public class UserJDBCAO {
+	
 	private static final Logger LOGGER = new Logger(IdentityJDBCDAO.class);
+	
 	private static Connection getConnection() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
 		final String connectionString = Configuration.getInstance().getProperty("db.host");
 		final String userName = Configuration.getInstance().getProperty("db.userName");
@@ -23,6 +27,7 @@ public class UserJDBCAO {
 		final Connection connection = DriverManager.getConnection(connectionString, userName, password);
 		return connection;
 	}
+	
 	private void createUser(User user) throws FileNotFoundException, IOException, DaoCreationException {
 		Connection connection = null;
 		try {
@@ -48,4 +53,35 @@ public class UserJDBCAO {
 			}
 		}
 	}
+	
+	public boolean Search(User user) throws FileNotFoundException, IOException {
+		Connection connection = null;
+		boolean result = true;
+		try {
+			connection = getConnection();
+			final PreparedStatement preparedStatement = connection
+					.prepareStatement("select USERNAME, PWD FROM USERS WHERE USERNAME = ? AND EMAIL = ? ");
+			preparedStatement.setString(1, user.getUserName());
+			preparedStatement.setString(2, user.getPwdHash());
+
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.isBeforeFirst() ) {    
+			    result = false; 
+			} 
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while searching", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
+	
 }
