@@ -6,7 +6,9 @@
 package fr.epita.project.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +133,12 @@ public class IdentityXMLDAO implements IdentityDAO {
 		}
 
 		return list;
+	}
+
+	@Override
+	public void printDB() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

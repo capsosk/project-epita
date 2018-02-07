@@ -1,9 +1,11 @@
 package fr.epita.project.service;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -82,6 +84,12 @@ public class FileIdentityDAO implements IdentityDAO{
 	}
 	
 	public void delete(Identity identity) {
+		
+	}
+
+	@Override
+	public void printDB() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
+		// TODO Auto-generated method stub
 		
 	}
 	

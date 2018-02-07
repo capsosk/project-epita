@@ -19,11 +19,11 @@ public class Main {
 		id1.setEmail("heii@gmaill");
 		id1.setUid("123");
 		
-		//dao.create(id1);
+		dao.create(id1);
 		
 		IdentityJDBCDAO dataB = new IdentityJDBCDAO();
-		//dataB.delete(id1);
-		dataB.printDB();
+		dataB.delete(id1);
+		//dataB.printDB();
 		// md5 pwd solution
 		System.out.println(User.password("abcd1234"));
 	}

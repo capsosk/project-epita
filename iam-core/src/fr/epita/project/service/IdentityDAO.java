@@ -2,6 +2,7 @@ package fr.epita.project.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import fr.epita.project.dataModel.Identity;
@@ -17,6 +18,7 @@ public interface IdentityDAO {
 	public void delete(Identity identity) throws FileNotFoundException, IOException;
 
 	public List<Identity> search(Identity criteria) throws FileNotFoundException, IOException;
-
+	
+	public void printDB() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException;
 }
 
