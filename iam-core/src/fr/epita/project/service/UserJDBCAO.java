@@ -98,5 +98,37 @@ public class UserJDBCAO {
 		
 	}
 	
+	String pwdHash;
 	
+	public boolean Login(User user) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+		boolean result = true;
+		Connection connection = getConnection();
+		try {
+			connection = getConnection();
+			final PreparedStatement preparedStatement = connection
+					.prepareStatement("select PWD FROM USERS WHERE USERNAME = ?");
+			preparedStatement.setString(1, user.getUserName());
+
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.isBeforeFirst() ) {    
+			    result = false; 
+			} 
+			while(resultSet.next()) {
+				if (user.getPwdHash() != resultSet.getString("PWD")) {
+					result = false;
+				}else {result = true; break;}
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while searching", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	return result;
+	}
 }
