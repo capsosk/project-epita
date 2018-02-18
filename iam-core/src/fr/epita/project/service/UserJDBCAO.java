@@ -2,14 +2,15 @@ package fr.epita.project.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import fr.epita.project.logger.Logger;
-import fr.epita.project.dataModel.Identity;
 import fr.epita.project.dataModel.User;
 import fr.epita.project.exceptions.DaoCreationException;
 
@@ -30,6 +31,7 @@ public class UserJDBCAO {
 	
 	public void createUser(User user) throws FileNotFoundException, IOException, DaoCreationException {
 		Connection connection = null;
+		
 		try {
 			connection = getConnection();
 			final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO USERS(USERNAME, PWD) values (?,?) ");
@@ -98,23 +100,40 @@ public class UserJDBCAO {
 		
 	}
 	
-	String pwdHash;
 	
-	public boolean Login(User user) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
+	public boolean Login(Scanner scanner) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, NoSuchAlgorithmException {
 		boolean result = true;
 		Connection connection = getConnection();
+		User user = new User();
+		
+		
+		
+		System.out.println("Enter your name: ");
+		String userName = scanner.next();
+		user.setUserName(userName);
+		System.out.println("Enter your password: ");
+		String pwd = scanner.next();
+		user.setPwdHash(user.password(pwd));
+		
+		System.out.println(user.getUserName());
+		System.out.println(user.getPwdHash());
+		
 		try {
 			connection = getConnection();
-			final PreparedStatement preparedStatement = connection
-					.prepareStatement("select PWD FROM USERS WHERE USERNAME = ?");
+			final PreparedStatement preparedStatement = connection.prepareStatement("select PWD FROM USERS WHERE USERNAME = ?");
 			preparedStatement.setString(1, user.getUserName());
 
-			final ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.isBeforeFirst() ) {    
-			    result = false; 
-			} 
-			while(resultSet.next()) {
-				if (user.getPwdHash() != resultSet.getString("PWD")) {
+			final ResultSet rs = preparedStatement.executeQuery();
+			
+			if (!rs.next() ) {
+				System.out.println("Invalid username / password!" + "if it doesnt work, try root and root");
+				
+			    return false;
+			}  
+			System.out.println(rs.getString(1));
+			while(rs.next()) {
+				System.out.println(rs.getString(1));
+				if (user.getPwdHash() != rs.getString(1)) {
 					result = false;
 				}else {result = true; break;}
 			}
@@ -130,5 +149,55 @@ public class UserJDBCAO {
 			}
 		}
 	return result;
+	}
+	public void update(User user, User updated) throws FileNotFoundException, IOException {
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE IDENTITIES SET PWD=? WHERE USERNAME=?");
+			
+			preparedStatement.setString(1, updated.getPwdHash());
+			
+			preparedStatement.setString(2, user.getUserName());
+			
+			
+			preparedStatement.execute();
+					
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while deleting", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				LOGGER.error("error while closing connection (delete)", e);
+			}
+		}
+	}
+	
+	public void delete(User user) throws FileNotFoundException, IOException {
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM USERS WHERE USERNAME = ? AND PWD = ?");
+			preparedStatement.setString(1, user.getUserName());
+			preparedStatement.setString(2, user.getPwdHash());
+			
+			preparedStatement.execute();
+					
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while deleting", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				LOGGER.error("error while closing connection (delete)", e);
+			}
+		}
+
+		
 	}
 }

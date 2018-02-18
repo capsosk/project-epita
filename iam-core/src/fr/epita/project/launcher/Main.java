@@ -3,6 +3,7 @@ package fr.epita.project.launcher;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 import fr.epita.project.dataModel.*;
 import fr.epita.project.exceptions.DaoCreationException;
@@ -18,9 +19,14 @@ public class Main {
 		id1.setDisplayName("Santaaaa");
 		id1.setEmail("heii@gmaill");
 		id1.setUid("123");
+		Scanner scanner = new Scanner(System.in);
 		//id1.printIdentity();
-		//dao.create(id1);
-		
+		UserJDBCAO userDB = new UserJDBCAO();
+		while (userDB.Login(scanner) != true) {
+			userDB.Login(scanner);
+		}
+		scanner.close();
+		/*
 		IdentityJDBCDAO dataB = new IdentityJDBCDAO();
 		//dataB.delete(id1);
 		dataB.printDB();
@@ -32,7 +38,7 @@ public class Main {
 		UserJDBCAO user1 = new UserJDBCAO();
 		//user1.createUser(u1);
 		user1.printDB();
-		//System.out.println(u1.getPwdHash());
+		//System.out.println(u1.getPwdHash());*/
 	}
 
 }
