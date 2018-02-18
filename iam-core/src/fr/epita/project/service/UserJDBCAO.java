@@ -29,9 +29,16 @@ public class UserJDBCAO {
 		return connection;
 	}
 	
-	public void createUser(User user) throws FileNotFoundException, IOException, DaoCreationException {
+	public void createUser(Scanner scanner) throws FileNotFoundException, IOException, DaoCreationException, NoSuchAlgorithmException {
 		Connection connection = null;
-		
+		User user = new User();
+		System.out.println("What will be the user name?");
+		String username = scanner.next();
+		user.setUserName(username);
+		System.out.println("Password?");
+		String password = scanner.next();
+		user.setPwdHash(user.password(password));
+		System.out.println("Adding user now!");
 		try {
 			connection = getConnection();
 			final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO USERS(USERNAME, PWD) values (?,?) ");
@@ -92,9 +99,9 @@ public class UserJDBCAO {
 		final PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
 		final ResultSet resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			System.out.println(resultSet.getString(1));
-			System.out.println(resultSet.getString(2));
-			System.out.println(resultSet.getString(3));
+			System.out.println("ID: " + resultSet.getString(1));
+			System.out.println("Username: " + resultSet.getString(2));
+			System.out.println("Password (hash): " + resultSet.getString(3));
 		}
 		connection.close();
 		
@@ -102,7 +109,7 @@ public class UserJDBCAO {
 	
 	
 	public boolean Login(Scanner scanner) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, NoSuchAlgorithmException {
-		boolean result = true;
+		boolean result = false;
 		Connection connection = getConnection();
 		User user = new User();
 		
@@ -115,8 +122,6 @@ public class UserJDBCAO {
 		String pwd = scanner.next();
 		user.setPwdHash(user.password(pwd));
 		
-		System.out.println(user.getUserName());
-		System.out.println(user.getPwdHash());
 		
 		try {
 			connection = getConnection();
@@ -124,19 +129,23 @@ public class UserJDBCAO {
 			preparedStatement.setString(1, user.getUserName());
 
 			final ResultSet rs = preparedStatement.executeQuery();
+		
 			
-			if (!rs.next() ) {
-				System.out.println("Invalid username / password!" + "if it doesnt work, try root and root");
-				
-			    return false;
-			}  
-			System.out.println(rs.getString(1));
+			
 			while(rs.next()) {
-				System.out.println(rs.getString(1));
-				if (user.getPwdHash() != rs.getString(1)) {
+				String equals = rs.getString("PWD");
+				if (!user.getPwdHash().equals(equals)) {
 					result = false;
-				}else {result = true; break;}
-			}
+					
+				} else {result = true; break;}
+				
+			}  
+		      
+			
+			
+			
+			
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error while searching", e);
 		} finally {
@@ -148,15 +157,58 @@ public class UserJDBCAO {
 				e.printStackTrace();
 			}
 		}
+		
+	if (!result) System.out.println("Wrong username / password! please try again");
+	
 	return result;
 	}
-	public void update(User user, User updated) throws FileNotFoundException, IOException {
+	public boolean Login(User user) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException, NoSuchAlgorithmException {
+		boolean result = true;
+		Connection connection = getConnection();
+		try {
+			connection = getConnection();
+			final PreparedStatement preparedStatement = connection.prepareStatement("select PWD FROM USERS WHERE USERNAME = ?");
+			preparedStatement.setString(1, user.getUserName());
+
+			final ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				String equals = rs.getString("PWD");
+				if (!user.getPwdHash().equals(equals)) {
+					result = false;
+					
+				} else {result = true; break;}
+				
+			}  
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while searching(login with user)", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	return result;
+	}
+	public void update(Scanner scanner) throws FileNotFoundException, IOException, NoSuchAlgorithmException {
+		User user = new User();
+		System.out.println("What is the name of the user you want to change?");
+		String username = scanner.next();
+		user.setUserName(username);
+		System.out.println("Please enter your new password");
+		String password = scanner.next();
+		user.setPwdHash(user.password(password));
+		System.out.println("Changing password now!");
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE IDENTITIES SET PWD=? WHERE USERNAME=?");
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE USERS SET PWD=? WHERE USERNAME=?");
 			
-			preparedStatement.setString(1, updated.getPwdHash());
+			preparedStatement.setString(1, user.getPwdHash());
 			
 			preparedStatement.setString(2, user.getUserName());
 			
@@ -164,20 +216,31 @@ public class UserJDBCAO {
 			preparedStatement.execute();
 					
 		} catch (ClassNotFoundException | SQLException e) {
-			LOGGER.error("error while deleting", e);
+			LOGGER.error("error while changing password", e);
 		} finally {
 			try {
 				if (connection != null) {
 					connection.close();
 				}
 			} catch (final SQLException e) {
-				LOGGER.error("error while closing connection (delete)", e);
+				LOGGER.error("error while closing connection (change password)", e);
 			}
 		}
 	}
 	
-	public void delete(User user) throws FileNotFoundException, IOException {
+	public void delete(Scanner scanner) throws FileNotFoundException, IOException, NoSuchAlgorithmException, ClassNotFoundException, SQLException {
 		Connection connection = null;
+		User user = new User();
+		System.out.println("What is the name of the user you want to delete?");
+		String username = scanner.next();
+		user.setUserName(username);
+		System.out.println("Please enter password of this user");
+		String password = scanner.next();
+		user.setPwdHash(user.password(password));
+		if (Login(user) != true) {
+			System.out.println("Wrong username/password! returning to selection");
+			return;
+		}
 		try {
 			connection = getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM USERS WHERE USERNAME = ? AND PWD = ?");

@@ -13,8 +13,8 @@ public class DaoCreationException extends Exception {
 	/**
 	 *
 	 */
-	public DaoCreationException(Identity faultyIdentity, Exception originalCause) {
-		faultyIdentity = faultyIdentity;
+	public DaoCreationException(Identity faultyIdentities, Exception originalCause) {
+		faultyIdentity = faultyIdentities;
 		initCause(originalCause);
 
 	}
