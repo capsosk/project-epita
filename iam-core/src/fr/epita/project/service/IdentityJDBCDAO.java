@@ -120,6 +120,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 	    }
 	    return true;
 	}
+	
 	public void search(Scanner scanner) throws FileNotFoundException, IOException {
 		final List<Identity> identities = new ArrayList<>();
 		Identity identity = new Identity(null, null, null);
@@ -191,12 +192,14 @@ public class IdentityJDBCDAO implements IdentityDAO{
 
 		final PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
 		final ResultSet resultSet = preparedStatement.executeQuery();
-		while (resultSet.next()) {
+		if (resultSet.next()){do {
 			System.out.println("Username: " + resultSet.getString(2));
 			System.out.println("Email: " + resultSet.getString(3));
 			System.out.println("UID: " + resultSet.getString(4));
 			System.out.println("ID (in database): " + resultSet.getInt(1));
-		}
+		} while (resultSet.next());
+		} else {System.out.println("Database is empty!");}
+		
 		connection.close();
 		
 	}
@@ -244,21 +247,21 @@ public class IdentityJDBCDAO implements IdentityDAO{
 			emailU = email;
 		}
 		System.out.println("UID?(has to be a number)");
-		String IDU = null;
-		
-		while(true) {
-			if (scanner.hasNextInt()) {
-				IDU = scanner.nextLine();
+		String UID = null;
+		while (true) {
+			
+			UID = scanner.nextLine();
+			if(UID.equals("null")) {
 				break;
 			}
-			String next = scanner.nextLine();
-			if (next == null) {
+			if (isInteger(UID, 10)) {
 				break;
-			}
+			}	
+			System.out.println(UID+" is not an integer, please try again or write (null)");
 		}
 		updated.setEmail(emailU);
 		updated.setDisplayName(nameU);
-		updated.setUid(IDU);
+		updated.setUid(UID);
 		
 		Connection connection = null;
 		try {

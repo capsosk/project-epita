@@ -146,11 +146,14 @@ public class UserJDBCAO {
 
 		final PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery);
 		final ResultSet resultSet = preparedStatement.executeQuery();
-		while (resultSet.next()) {
+		if (resultSet.next()) { do {
 			System.out.println("ID: " + resultSet.getString(1));
 			System.out.println("Username: " + resultSet.getString(2));
 			System.out.println("Password (hash): " + resultSet.getString(3));
 		}
+		while (resultSet.next());
+		} else {System.out.println("No users in database!");}
+			
 		connection.close();
 		
 	}
