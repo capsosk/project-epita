@@ -28,14 +28,16 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		System.out.println("Email?");
 		String email = scanner.next();
 		System.out.println("UID?(has to be a number)");
-		while (!scanner.hasNextInt()) { scanner.next();}
+		while (!scanner.hasNextInt()) { System.out.println("Please write a number!");scanner.next();}
 		String UID = scanner.next();
 		identity.setDisplayName(name);
 		identity.setEmail(email);
 		identity.setUid(UID);
 		if (!searchFor(identity)) {
+			System.out.println("No such identity, returning to selection menu");
 			return;
 		}
+		System.out.println("Deleting identity " + identity.getDisplayName());
 		Connection connection = null;
 		try {
 			connection = getConnection();
@@ -60,7 +62,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		
 	}
 	
-	public void create(Scanner scanner) throws DaoCreationException, FileNotFoundException, IOException {
+	public void create(Scanner scanner) throws DaoCreationException, FileNotFoundException, IOException, ClassNotFoundException, SQLException {
 		Connection connection = null;
 		Identity identity = new Identity(null, null, null);
 		System.out.println("What is the identity name?");
@@ -68,11 +70,16 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		System.out.println("Email?");
 		String email = scanner.next();
 		System.out.println("ID? (has to be a number)");
-		while (!scanner.hasNextInt()) { scanner.next();}
+		while (!scanner.hasNextInt()) { System.out.println("Please write a number");scanner.next();}
 		String ID = scanner.next();
 		identity.setDisplayName(name);
 		identity.setEmail(email);
 		identity.setUid(ID);
+		if (searchFor(identity)) {
+			System.out.println("Identity already exists, please create a different one");
+			System.out.println("Returning to selection");
+			return;
+		}
 		try {
 			connection = getConnection();
 			final PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO IDENTITIES(UID, DISPLAY_NAME, EMAIL) values (?,?,?) ");
@@ -80,6 +87,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 			preparedStatement.setString(2, identity.getDisplayName());
 			preparedStatement.setString(3, identity.getEmail());
 			preparedStatement.execute();
+			System.out.println("creating identity "+identity.getDisplayName());
 
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error in create method :" + e.getMessage());
@@ -100,32 +108,53 @@ public class IdentityJDBCDAO implements IdentityDAO{
 
 
 	}
-
+	public static boolean isInteger(String s, int radix) {
+	    if(s.isEmpty()) return false;
+	    if(s.equals("")) return false;
+	    for(int i = 0; i < s.length(); i++) {
+	        if(i == 0 && s.charAt(i) == '-') {
+	            if(s.length() == 1) return false;
+	            else continue;
+	        }
+	        if(Character.digit(s.charAt(i),radix) < 0) return false;
+	    }
+	    return true;
+	}
 	public void search(Scanner scanner) throws FileNotFoundException, IOException {
 		final List<Identity> identities = new ArrayList<>();
 		Identity identity = new Identity(null, null, null);
-		System.out.println("Name you are looking for?");
-		scanner.nextLine();
+		
+		System.out.println("Name of the identity you are looking for?");
 		String name = scanner.nextLine();
 		System.out.println("Email?");
 		String email = scanner.nextLine();
-		System.out.println("ID?(has to be a number in order to work)");	
-		String ID = scanner.nextLine();
+		System.out.println("UID?");
+		String UID = null;
 		
-
-		
+		while (true) {
+			
+			UID = scanner.nextLine();
+			if(UID.equals("null")) {
+				break;
+			}
+			if (isInteger(UID, 10)) {
+				break;
+			}	
+			System.out.println(UID+" is not an integer, please try again or write (null)");
+		}
 		
 		identity.setDisplayName(name);
 		identity.setEmail(email);
-		identity.setUid(ID);
+		identity.setUid(UID);
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			final PreparedStatement preparedStatement = connection
-					.prepareStatement("select UID, DISPLAY_NAME, EMAIL FROM IDENTITIES WHERE DISPLAY_NAME = ? OR EMAIL = ? OR UID = ? ");
-			preparedStatement.setString(3, identity.getUid());
+					.prepareStatement("select DISPLAY_NAME, EMAIL, UID FROM IDENTITIES WHERE DISPLAY_NAME = ? OR EMAIL = ? OR UID = ? ");
+			
 			preparedStatement.setString(1, identity.getDisplayName());
 			preparedStatement.setString(2, identity.getEmail());
+			preparedStatement.setString(3, identity.getUid());
 
 			final ResultSet resultSet = preparedStatement.executeQuery();
 			
@@ -147,7 +176,9 @@ public class IdentityJDBCDAO implements IdentityDAO{
 				e.printStackTrace();
 			}
 		}
-
+		if (identities.isEmpty()) {
+			System.out.println("No such identity");
+		}
 		for (Identity id : identities) {
 			id.printIdentity();
 		}
@@ -189,12 +220,13 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		System.out.println("Whats its Email?");
 		String email = scanner.next();
 		System.out.println("and ID? (has to be a number)");
-		/*while (!scanner.hasNextInt()) { scanner.next();}*/
+		while (!scanner.hasNextInt()) {System.out.println("Please write a number!");scanner.next();}
 		String ID = scanner.next();
 		identity.setDisplayName(name);
 		identity.setEmail(email);
 		identity.setUid(ID);
 		if (!searchFor(identity)) {
+			System.out.println("Identity doesnt exist");
 			return;
 		}
 		
@@ -211,10 +243,19 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		if (emailU.equals("")) {
 			emailU = email;
 		}
-		System.out.println("ID?(has to be a number)");
+		System.out.println("UID?(has to be a number)");
 		String IDU = null;
-		while(!scanner.hasNextInt()) {scanner.next();}
-		IDU = scanner.next();
+		
+		while(true) {
+			if (scanner.hasNextInt()) {
+				IDU = scanner.nextLine();
+				break;
+			}
+			String next = scanner.nextLine();
+			if (next == null) {
+				break;
+			}
+		}
 		updated.setEmail(emailU);
 		updated.setDisplayName(nameU);
 		updated.setUid(IDU);
@@ -230,6 +271,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 			preparedStatement.setString(5, identity.getDisplayName());
 			preparedStatement.setString(6, identity.getEmail());
 			preparedStatement.execute();
+			System.out.println("Updated!");
 					
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error while deleting", e);
@@ -244,7 +286,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		}
 	}
 	public boolean searchFor(Identity identity) throws ClassNotFoundException, FileNotFoundException, SQLException, IOException {
-		boolean result = true;
+		boolean result = false;
 		Connection connection = getConnection();
 		try {
 			connection = getConnection();
@@ -255,12 +297,10 @@ public class IdentityJDBCDAO implements IdentityDAO{
 
 			final ResultSet rs = preparedStatement.executeQuery();
 			
-			if (!rs.next() ) {
-				System.out.println("No such identity!");
-				System.out.println("Returning to menu, try printing the DB");
-			    result = false;
+			if (rs.next() ) {
+			    result = true;
 			}  
-			else {result = true;}
+			
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error while searching(login with user)", e);
 		} finally {

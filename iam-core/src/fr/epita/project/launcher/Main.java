@@ -26,6 +26,7 @@ public class Main {
 		userORid(scanner, userDB, idDB, result);
 		scanner.close();
 	}
+	
 	private static int select(Scanner scanner) {
 		boolean bool = true;
 		int result = 0;
@@ -35,6 +36,7 @@ public class Main {
 			System.out.println("Write down your Number");
 			while (!scanner.hasNextInt()) {System.out.println("please write a number (1) or (2)");scanner.next();}
 			result = scanner.nextInt();
+			scanner.nextLine();
 			if (result == 1) {
 				System.out.println("Users");
 				bool = false;
@@ -54,7 +56,7 @@ public class Main {
 				System.out.println("you can also print all users with (5), exit with (6) or go back to selection with (7)");
 				while (!scanner.hasNextInt()) scanner.next();
 				result = scanner.nextInt();
-				
+				scanner.nextLine();
 				switch (result) {
 	            case 1:  userDB.update(scanner);
 	                     break;
@@ -83,7 +85,7 @@ public class Main {
 				System.out.println("you can also print all identities with (5), exit with (6) or go back to selection with (7)");
 				while (!scanner.hasNextInt()) {System.out.println("please write a number");scanner.next();}
 				result = scanner.nextInt();
-				
+				scanner.nextLine();
 				switch (result) {
 	            case 1:  idDB.update(scanner);
 	                     break;
@@ -106,6 +108,7 @@ public class Main {
 		System.out.println("What do you want to edit now? Users(1), Identities(2) or write any other number to exit");
 		while (!scanner.hasNextInt()) {System.out.println("please write a number (1) or (2)");scanner.next();}
 		again = scanner.nextInt();
+		scanner.nextLine();
 		userORid(scanner, userDB, idDB, again);
 		
 		

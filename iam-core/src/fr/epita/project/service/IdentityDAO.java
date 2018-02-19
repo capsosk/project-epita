@@ -10,7 +10,7 @@ import fr.epita.project.exceptions.DaoCreationException;
 
 public interface IdentityDAO {
 
-	public void create(Scanner scanner) throws DaoCreationException, FileNotFoundException, IOException;
+	public void create(Scanner scanner) throws DaoCreationException, FileNotFoundException, IOException, ClassNotFoundException, SQLException;
 
 	public void update(Scanner scanner) throws FileNotFoundException, IOException, ClassNotFoundException, SQLException;
 
