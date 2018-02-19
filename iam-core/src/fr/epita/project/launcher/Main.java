@@ -104,7 +104,7 @@ public class Main {
 		}else {return;}
 		
 		System.out.println("What do you want to edit now? Users(1), Identities(2) or write any other number to exit");
-		while (!scanner.hasNextInt()) {System.out.println("please write a number");scanner.next();}
+		while (!scanner.hasNextInt()) {System.out.println("please write a number (1) or (2)");scanner.next();}
 		again = scanner.nextInt();
 		userORid(scanner, userDB, idDB, again);
 		
