@@ -23,6 +23,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 	public void delete(Scanner scanner) throws FileNotFoundException, IOException, ClassNotFoundException, SQLException {
 		
 		Identity identity = new Identity(null, null, null);
+		System.out.println("If you wish to delete an identity, you have to write down each attribute");
 		System.out.println("What is the identity name?");
 		String name = scanner.next();
 		System.out.println("Email?");
@@ -246,12 +247,13 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		if (emailU.equals("")) {
 			emailU = email;
 		}
-		System.out.println("UID?(has to be a number)");
+		System.out.println("UID?(write 'null' if you dont want to change UID)");
 		String UID = null;
 		while (true) {
 			
 			UID = scanner.nextLine();
 			if(UID.equals("null")) {
+				UID = ID;
 				break;
 			}
 			if (isInteger(UID, 10)) {
