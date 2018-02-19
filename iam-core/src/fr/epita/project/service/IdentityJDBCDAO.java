@@ -264,7 +264,10 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		updated.setEmail(emailU);
 		updated.setDisplayName(nameU);
 		updated.setUid(UID);
-		
+		if (searchFor(updated)) {
+			System.out.println("Identity you wish to create already exists!");
+			return;
+		}
 		Connection connection = null;
 		try {
 			connection = getConnection();
