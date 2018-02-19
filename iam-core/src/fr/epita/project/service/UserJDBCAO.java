@@ -166,6 +166,12 @@ public class UserJDBCAO {
 		System.out.println("Enter your name: ");
 		String userName = scanner.next();
 		user.setUserName(userName);
+		while (!Search(user)) {
+			System.out.println("Wrong username!");
+			System.out.println("Please try again");
+			userName = scanner.next();
+			user.setUserName(userName);
+		}
 		System.out.println("Enter your password: ");
 		String pwd = scanner.next();
 		user.setPwdHash(user.password(pwd));
@@ -243,6 +249,12 @@ public class UserJDBCAO {
 		System.out.println("What is the name of the user you want to change?");
 		String username = scanner.next();
 		user.setUserName(username);
+		while (!Search(user)) {
+			System.out.println("Wrong username1");
+			System.out.println("Please try again");
+			username = scanner.next();
+			user.setUserName(username);
+		}
 		System.out.println("Please enter your new password");
 		String password = scanner.next();
 		user.setPwdHash(user.password(password));
@@ -278,6 +290,12 @@ public class UserJDBCAO {
 		System.out.println("What is the name of the user you want to delete?");
 		String username = scanner.next();
 		user.setUserName(username);
+		while (!Search(user)) {
+			System.out.println("Wrong username");
+			System.out.println("Please try again");
+			username = scanner.next();
+			user.setUserName(username);
+		}
 		System.out.println("Please enter password of this user");
 		String password = scanner.next();
 		user.setPwdHash(user.password(password));
@@ -292,6 +310,7 @@ public class UserJDBCAO {
 			preparedStatement.setString(2, user.getPwdHash());
 			
 			preparedStatement.execute();
+			System.out.println("Deleting user " + user.getUserName());
 					
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error while deleting", e);
