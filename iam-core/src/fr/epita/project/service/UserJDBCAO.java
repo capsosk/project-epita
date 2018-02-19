@@ -35,9 +35,23 @@ public class UserJDBCAO {
 		System.out.println("What will be the user name?");
 		String username = scanner.next();
 		user.setUserName(username);
+		
+		while (Search(user)) {
+			System.out.println("User already exists!");
+			System.out.println("Please select different username");
+			username = scanner.next();
+			user.setUserName(username);
+		}
+		
 		System.out.println("Password?");
 		String password = scanner.next();
 		user.setPwdHash(user.password(password));
+		
+		if (Search(user)) {
+			System.out.println("User already exists!");
+			return;
+		}
+		
 		System.out.println("Adding user now!");
 		try {
 			connection = getConnection();
@@ -62,21 +76,21 @@ public class UserJDBCAO {
 			}
 		}
 	}
-	
 	public boolean Search(User user) throws FileNotFoundException, IOException {
 		Connection connection = null;
-		boolean result = true;
+		boolean result = false;
 		try {
 			connection = getConnection();
 			final PreparedStatement preparedStatement = connection
-					.prepareStatement("select USERNAME, PWD FROM USERS WHERE USERNAME = ? AND EMAIL = ? ");
+					.prepareStatement("select USERNAME FROM USERS WHERE USERNAME = ?");
+			
 			preparedStatement.setString(1, user.getUserName());
-			preparedStatement.setString(2, user.getPwdHash());
 
 			final ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.isBeforeFirst() ) {    
-			    result = false; 
-			} 
+			
+			if (resultSet.next()) {
+				result = true;
+			}
 		} catch (ClassNotFoundException | SQLException e) {
 			LOGGER.error("error while searching", e);
 		} finally {
@@ -90,6 +104,40 @@ public class UserJDBCAO {
 		}
 
 		return result;
+	}
+	public void Search(Scanner scanner) throws FileNotFoundException, IOException {
+		Connection connection = null;
+		boolean result = false;
+		System.out.println("What is the name of the user you are searching for?");
+		String username = scanner.next();
+		try {
+			connection = getConnection();
+			final PreparedStatement preparedStatement = connection
+					.prepareStatement("select USERNAME FROM USERS WHERE USERNAME = ?");
+			
+			preparedStatement.setString(1, username);
+
+			final ResultSet resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet.next()) {
+				result = true;
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			LOGGER.error("error while searching", e);
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (final SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (result) {
+			System.out.println("User " + username + " is in the database.");
+		} else {System.out.println("User " + username + " is not in the database, try again.");}
+		
 	}
 	public void printDB() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
 		final Connection connection = getConnection();
@@ -140,10 +188,6 @@ public class UserJDBCAO {
 				} else {result = true; break;}
 				
 			}  
-		      
-			
-			
-			
 			
 			
 		} catch (ClassNotFoundException | SQLException e) {

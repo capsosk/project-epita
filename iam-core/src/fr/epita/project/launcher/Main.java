@@ -33,7 +33,7 @@ public class Main {
 		while (bool == true) {
 			System.out.println("What do you want to do? Edit Users (1) or Identities(2)? ");
 			System.out.println("Write down your Number");
-			while (!scanner.hasNextInt()) scanner.next();
+			while (!scanner.hasNextInt()) {System.out.println("please write a number (1) or (2)");scanner.next();}
 			result = scanner.nextInt();
 			if (result == 1) {
 				System.out.println("Users");
@@ -50,8 +50,8 @@ public class Main {
 		boolean bool = true;
 		if (result == 1) {
 			while (bool == true) {
-				System.out.println("What do you want to do with Users? Change password(1), Delete(2) or Create(3)?");
-				System.out.println("you can also print all users with (4), exit with (5) or go back to selection with (6)");
+				System.out.println("What do you want to do with Users? Change password(1), Delete(2), Create(3) or Search for users(4)?");
+				System.out.println("you can also print all users with (5), exit with (6) or go back to selection with (7)");
 				while (!scanner.hasNextInt()) scanner.next();
 				result = scanner.nextInt();
 				
@@ -62,12 +62,14 @@ public class Main {
 	                     break;
 	            case 3:  userDB.createUser(scanner);
 	                     break;
-	            case 4:  userDB.printDB();
+	            case 4:  userDB.Search(scanner);
+	            		 break;
+	            case 5:  userDB.printDB();
                 		 break;
-	            case 5:  return;
+	            case 6:  return;
 	            
-	            case 6:  bool = false; break;
-	            default: System.out.println("only accepting NUMBERS 1,2,3,4");
+	            case 7:  bool = false; break;
+	            default: System.out.println("only accepting NUMBERS 1,2,3,4,5,6,7");
 	                     break;
 	            }
 				
@@ -79,7 +81,7 @@ public class Main {
 			while (bool == true) {
 				System.out.println("What do you want to do with Identities? Update(1), Delete(2), Create(3) or Search(4)?");
 				System.out.println("you can also print all identities with (5), exit with (6) or go back to selection with (7)");
-				while (!scanner.hasNextInt()) scanner.next();
+				while (!scanner.hasNextInt()) {System.out.println("please write a number");scanner.next();}
 				result = scanner.nextInt();
 				
 				switch (result) {
@@ -95,14 +97,14 @@ public class Main {
        		 			 break;
 	            case 6:  return;
 	            case 7:  bool = false; break;
-	            default: System.out.println("only accepting NUMBERS 1,2,3,4,");
+	            default: System.out.println("only accepting NUMBERS 1,2,3,4,5,6,7");
 	                     break;
 	            }
 			}
 		}else {return;}
 		
 		System.out.println("What do you want to edit now? Users(1), Identities(2) or write any other number to exit");
-		while (!scanner.hasNextInt()) scanner.next();
+		while (!scanner.hasNextInt()) {System.out.println("please write a number");scanner.next();}
 		again = scanner.nextInt();
 		userORid(scanner, userDB, idDB, again);
 		
