@@ -14,7 +14,7 @@ import fr.epita.project.logger.Logger;
 import fr.epita.project.dataModel.User;
 import fr.epita.project.exceptions.DaoCreationException;
 
-public class UserJDBCAO {
+public class UserJDBCDAO {
 	
 	private static final Logger LOGGER = new Logger(IdentityJDBCDAO.class);
 	
@@ -46,11 +46,6 @@ public class UserJDBCAO {
 		System.out.println("Password?");
 		String password = scanner.next();
 		user.setPwdHash(user.password(password));
-		
-		if (Search(user)) {
-			System.out.println("User already exists!");
-			return;
-		}
 		
 		System.out.println("Adding user now!");
 		try {
@@ -252,8 +247,8 @@ public class UserJDBCAO {
 		System.out.println("What is the name of the user you want to change?");
 		String username = scanner.next();
 		user.setUserName(username);
-		while (!Search(user)) {
-			System.out.println("Wrong username1");
+		while (!Search(user) || user.getUserName().equals("root")) {
+			System.out.println("Wrong username / cannot change the password of user root");
 			System.out.println("Please try again");
 			username = scanner.next();
 			user.setUserName(username);
@@ -290,11 +285,12 @@ public class UserJDBCAO {
 	public void delete(Scanner scanner) throws FileNotFoundException, IOException, NoSuchAlgorithmException, ClassNotFoundException, SQLException {
 		Connection connection = null;
 		User user = new User();
+		
 		System.out.println("What is the name of the user you want to delete?");
 		String username = scanner.next();
 		user.setUserName(username);
-		while (!Search(user)) {
-			System.out.println("Wrong username");
+		while (!Search(user) || user.getUserName().equals("root")) {
+			System.out.println("Wrong username or cannot delete user 'root'");
 			System.out.println("Please try again");
 			username = scanner.next();
 			user.setUserName(username);

@@ -16,7 +16,7 @@ public class Main {
 		
 		
 		Scanner scanner = new Scanner(System.in);
-		UserJDBCAO userDB = new UserJDBCAO();
+		UserJDBCDAO userDB = new UserJDBCDAO();
 		IdentityJDBCDAO idDB = new IdentityJDBCDAO();
 		
 		while ( userDB.Login(scanner) != true);
@@ -46,7 +46,7 @@ public class Main {
 		return result;
 	}
 	
-	private static void userORid(Scanner scanner, UserJDBCAO userDB, IdentityJDBCDAO idDB,int result)
+	private static void userORid(Scanner scanner, UserJDBCDAO userDB, IdentityJDBCDAO idDB,int result)
 			throws FileNotFoundException, IOException, DaoCreationException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
 		int again = 0;
 		boolean bool = true;

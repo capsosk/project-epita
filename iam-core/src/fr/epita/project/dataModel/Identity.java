@@ -36,15 +36,14 @@ public class Identity {
 	}
 
 	
-	
+	//not used
 	@Override
 	public String toString() {
 		return "Identity [displayName=" + displayName + ", email=" + email + ", uid=" + uid + "]";
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 */
+	
+	//not used
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -55,9 +54,9 @@ public class Identity {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+	
+	
+	//not used
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

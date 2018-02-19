@@ -70,7 +70,7 @@ public class IdentityJDBCDAO implements IdentityDAO{
 		String name = scanner.next();
 		System.out.println("Email?");
 		String email = scanner.next();
-		System.out.println("ID? (has to be a number)");
+		System.out.println("UID? (has to be a number)");
 		while (!scanner.hasNextInt()) { System.out.println("Please write a number");scanner.next();}
 		String ID = scanner.next();
 		identity.setDisplayName(name);
