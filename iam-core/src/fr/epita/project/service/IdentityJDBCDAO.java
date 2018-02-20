@@ -1,21 +1,16 @@
 package fr.epita.project.service;
 
 
+import fr.epita.project.dataModel.Identity;
+import fr.epita.project.exceptions.DaoCreationException;
+import fr.epita.project.logger.Logger;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import fr.epita.project.exceptions.DaoCreationException;
-import fr.epita.project.service.Configuration;
-import fr.epita.project.dataModel.Identity;
-import fr.epita.project.logger.Logger;
 
 public class IdentityJDBCDAO implements IdentityDAO{
 	private static final Logger LOGGER = new Logger(IdentityJDBCDAO.class);

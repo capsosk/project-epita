@@ -1,10 +1,10 @@
 package fr.epita.project.service;
 
+import fr.epita.project.logger.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
-
-import fr.epita.project.logger.Logger;
 
 
 public class Configuration {

@@ -1,6 +1,5 @@
 package fr.epita.project.launcher;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -19,7 +18,7 @@ public class Main {
 		UserJDBCDAO userDB = new UserJDBCDAO();
 		IdentityJDBCDAO idDB = new IdentityJDBCDAO();
 		
-		while ( userDB.Login(scanner) != true);
+		while ( !userDB.Login(scanner));
 		
 		int result = select(scanner);
 		
@@ -31,7 +30,7 @@ public class Main {
 		boolean bool = true;
 		int result = 0;
 		
-		while (bool == true) {
+		while (bool) {
 			System.out.println("What do you want to do? Edit Users (1) or Identities(2)? ");
 			System.out.println("Write down your Number");
 			while (!scanner.hasNextInt()) {System.out.println("please write a number (1) or (2)");scanner.next();}
@@ -47,11 +46,11 @@ public class Main {
 	}
 	
 	private static void userORid(Scanner scanner, UserJDBCDAO userDB, IdentityJDBCDAO idDB,int result)
-			throws FileNotFoundException, IOException, DaoCreationException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
-		int again = 0;
+			throws IOException, DaoCreationException, ClassNotFoundException, SQLException, NoSuchAlgorithmException {
+		int again;
 		boolean bool = true;
 		if (result == 1) {
-			while (bool == true) {
+			while (bool) {
 				System.out.println("What do you want to do with Users? Change password(1), Delete(2), Create(3) or Search for users(4)?");
 				System.out.println("you can also print all users with (5), exit with (6) or go back to selection with (7)");
 				while (!scanner.hasNextInt()) scanner.next();
@@ -80,7 +79,7 @@ public class Main {
 		}
 			
 		else if (result == 2) {
-			while (bool == true) {
+			while (bool) {
 				System.out.println("What do you want to do with Identities? Update(1), Delete(2), Create(3) or Search(4)?");
 				System.out.println("you can also print all identities with (5), exit with (6) or go back to selection with (7)");
 				while (!scanner.hasNextInt()) {System.out.println("please write a number");scanner.next();}

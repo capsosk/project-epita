@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-import fr.epita.project.logger.Logger;
 import fr.epita.project.dataModel.User;
 import fr.epita.project.exceptions.DaoCreationException;
+import fr.epita.project.logger.Logger;
 
 public class UserJDBCDAO {
 	
